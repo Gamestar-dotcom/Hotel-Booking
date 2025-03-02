@@ -6,15 +6,16 @@ import {
   getBookings,
   updateBooking,
 } from "../controllers/booking.controller.js";
+import { authenticateUser } from "../utils/authUser.js";
 
 const router = express.Router();
 
-router.route("/").get(getBookings).post(createBooking);
+router.route("/").get(getBookings).post(authenticateUser, createBooking);
 
 router
   .route("/:id")
   .get(getBookingById)
-  .put(updateBooking)
-  .delete(deleteBooking);
+  .put(authenticateUser, updateBooking)
+  .delete(authenticateUser, deleteBooking);
 
 export default router;
