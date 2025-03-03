@@ -1,13 +1,16 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const authenticateUser = async (req, res, next) => {
   try {
-    const token = req.cookies.jwt; // Get token from cookies
+    let token = req.cookies.jwt; // Get token from cookies
 
-    // if not availble use headers
+    // If not available in cookies, check the Authorization header
     if (!token && req.headers.authorization) {
-      token = req.headers.authorization.split(" ")[1];
+      token = req.headers.authorization.split(" ")[1]; // Assign token correctly
     }
 
     if (!token) {
@@ -15,7 +18,6 @@ export const authenticateUser = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify token
-
     req.user = await User.findById(decoded.userId).select("-password");
 
     next();

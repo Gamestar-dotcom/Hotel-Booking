@@ -25,6 +25,6 @@ router
   .put(authenticateUser, updateUser)
   .delete(authenticateUser, authenticateAdmin, deleteUser);
 
-router.post("/logout", authenticateUser, logoutUser);
+router.post("/logout", logoutUser);
 
 export default router;
